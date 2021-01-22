@@ -1,0 +1,7 @@
+{
+  "name": "CancerOpNotes",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
