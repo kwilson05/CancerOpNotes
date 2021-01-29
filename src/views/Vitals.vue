@@ -12,9 +12,9 @@
         </ion-toolbar>
       </ion-header>
 
-      <ion-button @click="router.replace({ path: '/register' })">
-        Logout</ion-button
-      >
+      {{ user.email }}
+
+      <ion-button @click="doLogout"> Logout</ion-button>
     </ion-content>
   </ion-page>
 </template>
@@ -30,6 +30,7 @@ import {
 } from "@ionic/vue";
 
 import { useRouter } from "vue-router";
+import useFirebaseAuth from "../composable/firebase-auth";
 
 export default {
   name: "Vitals",
@@ -42,8 +43,15 @@ export default {
     IonButton,
   },
   setup() {
+    const { logout, user } = useFirebaseAuth();
+    const router = useRouter();
+    const doLogout = async () => {
+      await logout();
+      router.replace({ path: "/login" });
+    };
     return {
-      router: useRouter(),
+      doLogout,
+      user,
     };
   },
 };

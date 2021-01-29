@@ -2,7 +2,7 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Register</ion-title>
+        <ion-title>Cancer Vitals</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
@@ -14,9 +14,26 @@
         <ion-label position="stacked">Password</ion-label>
         <ion-input placeholder="Enter a password" type="password"></ion-input>
       </ion-item>
-      <ion-button @click="router.replace({ path: '/tabs/vitals' })"
-        >Register</ion-button
-      >
+
+      <ion-grid>
+        <ion-row class="ion-justify-content-center">
+          <ion-col size="100%">
+            <ion-button>Register</ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-justify-content-center">
+          <ion-col size="100%">
+            <ion-text> or </ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-justify-content-center">
+          <ion-col size="100%">
+            <ion-button @click="router.replace({ path: '/login' })"
+              >Login</ion-button
+            >
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-content>
   </ion-page>
 </template>

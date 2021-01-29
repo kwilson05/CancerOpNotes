@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import Tabs from '../views/Tabs.vue';
-import Register from '../views/Register.vue'
+
+import useFirebaseAuth from "@/composable/firebase-auth";
+const state = useFirebaseAuth();
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/register'
+    redirect: '/login'
   },
   {
     path: '/tabs/',
@@ -17,6 +19,7 @@ const routes: Array<RouteRecordRaw> = [
         redirect: '/tabs/vitals'
       },
       {
+        name: 'vitals',
         path: 'vitals',
         component: () => import('@/views/Vitals.vue')
       },
@@ -24,13 +27,28 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/register',
-    component: Register
-  }
+    component: () => import('@/views/Register.vue')
+  },
+  {
+    path: '/login',
+    component: () => import('@/views/Login.vue')
+  },
+
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (state.user.value && (to.name === 'login')) {
+    next({ name: 'vitals', replace: true })
+  } else if (!state.user.value && (to.name === 'login')) {
+    next({ name: 'vitals', replace: true })
+  } else {
+    next();
+  }
 })
 
 export default router
