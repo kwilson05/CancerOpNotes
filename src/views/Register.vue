@@ -131,9 +131,6 @@ export default {
 
     const doRegister = async () => {
       triedToRegister.value = true;
-      console.log(hasNameValidationError.value);
-      console.log(hasPasswordValidationError.value);
-      console.log(hasEmailValidationError.value);
       if (
         !hasNameValidationError.value &&
         !hasPasswordValidationError.value &&
@@ -143,7 +140,6 @@ export default {
       }
 
       if (state.user.value) {
-        //await saveNewUser();
         router.replace({ path: "/tabs/vitals" });
       } else if (state.error.value) {
         hasRegistrationError.value = true;

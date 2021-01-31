@@ -26,6 +26,7 @@ export default function () {
 
     try {
       const user = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      state.user = user;
       return user;
     }
     catch (error) {
@@ -39,17 +40,17 @@ export default function () {
     })
   }
 
-  const login = (email: string, password: string) => {
-    return firebase.auth().
-      signInWithEmailAndPassword(email, password).
-      then((user) => {
-        state.user = user;
-        state.error = null;
-        return user;
-      }, error => {
-        state.error = error;
-        throw error;
-      })
+  const login = async (email: string, password: string) => {
+    try {
+      const user = await firebase.auth().
+        signInWithEmailAndPassword(email, password);
+      state.user = user;
+      return user;
+    }
+    catch (error) {
+      state.error = error;
+    }
+
   }
 
 
