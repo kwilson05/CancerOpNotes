@@ -13,14 +13,25 @@ if (firebase.apps.length == 0) {
 }
 
 
-const state = reactive<{ user: any; initialized: boolean, error: any }>({
+const state = reactive<{ user: any; initialized: boolean; error: any }>({
   user: null,
   initialized: false,
   error: null
-})
+});
 
 export default function () {
   // run at startup
+
+  const register = async (email: string, password: string) => {
+
+    try {
+      const user = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      return user;
+    }
+    catch (error) {
+      state.error = error;
+    }
+  }
 
   const logout = () => {
     return firebase.auth().signOut().then(() => {
@@ -44,7 +55,7 @@ export default function () {
 
 
   const authCheck = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       !state.initialized && firebase.auth().onAuthStateChanged(async (_user) => {
         if (_user) {
           state.user = _user
@@ -61,6 +72,7 @@ export default function () {
     ...toRefs(state),
     login,
     logout,
+    register,
     authCheck,
   }
 }

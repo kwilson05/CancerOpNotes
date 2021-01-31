@@ -26,10 +26,12 @@ const routes: Array<RouteRecordRaw> = [
     ]
   },
   {
+    name: 'register',
     path: '/register',
     component: () => import('@/views/Register.vue')
   },
   {
+    name: 'login',
     path: '/login',
     component: () => import('@/views/Login.vue')
   },
@@ -42,10 +44,14 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (state.user.value && (to.name === 'login')) {
-    next({ name: 'vitals', replace: true })
-  } else if (!state.user.value && (to.name === 'login')) {
-    next({ name: 'vitals', replace: true })
+  if (state.user.value && (to.name === 'login' || to.name === 'register')) {
+    next({ name: 'vitals', replace: true });
+  } else if (
+    !state.user.value &&
+    to.name !== 'login' &&
+    to.name !== 'register'
+  ) {
+    next({ name: 'login', replace: true });
   } else {
     next();
   }

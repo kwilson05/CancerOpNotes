@@ -49,6 +49,7 @@ export default {
       await logout();
       router.replace({ path: "/login" });
     };
+    console.log(user.email);
     return {
       doLogout,
       user,

@@ -8,17 +8,25 @@
     <ion-content :fullscreen="true">
       <ion-item>
         <ion-label position="stacked">Email</ion-label>
-        <ion-input placeholder="Enter an email" type="email"></ion-input>
+        <ion-input
+          v-model="credentials.email"
+          placeholder="Enter an email"
+          type="email"
+        ></ion-input>
       </ion-item>
       <ion-item>
         <ion-label position="stacked">Password</ion-label>
-        <ion-input placeholder="Enter a password" type="password"></ion-input>
+        <ion-input
+          v-model="credentials.password"
+          placeholder="Enter a password"
+          type="password"
+        ></ion-input>
       </ion-item>
 
       <ion-grid>
         <ion-row class="ion-justify-content-center">
           <ion-col size="100%">
-            <ion-button>Register</ion-button>
+            <ion-button @click="doRegister">Register</ion-button>
           </ion-col>
         </ion-row>
         <ion-row class="ion-justify-content-center">
@@ -50,7 +58,9 @@ import {
   IonInput,
   IonButton,
 } from "@ionic/vue";
+import { reactive } from "vue";
 import { useRouter } from "vue-router";
+import useFirebaseAuth from "@/composable/firebase-auth";
 export default {
   name: "Register",
   components: {
@@ -65,8 +75,22 @@ export default {
     IonButton,
   },
   setup() {
+    const router = useRouter();
+    const { register } = useFirebaseAuth();
+    const state = useFirebaseAuth();
+
+    const credentials = reactive({ email: "", password: "" });
+
+    const doRegister = async () => {
+      await register(credentials.email, credentials.password);
+      if (state.user.value) {
+        router.replace({ path: "/tabs/vitals" });
+      }
+    };
     return {
-      router: useRouter(),
+      credentials,
+      doRegister,
+      router,
     };
   },
 };

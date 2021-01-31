@@ -62,7 +62,7 @@ import {
   IonRow,
 } from "@ionic/vue";
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { reactive } from "vue";
 import useFirebaseAuth from "@/composable/firebase-auth";
 export default {
   name: "Login",
@@ -83,13 +83,10 @@ export default {
     const router = useRouter();
     const { login } = useFirebaseAuth();
 
-    const credentials = ref<{
-      email: string;
-      password: string;
-    }>({ email: "", password: "" });
+    const credentials = reactive({ email: "", password: "" });
 
     const doLogin = async () => {
-      await login(credentials.value.email, credentials.value.password);
+      await login(credentials.email, credentials.password);
       router.replace({ path: "/tabs/vitals" });
     };
     return {
